@@ -1,5 +1,7 @@
 package generics
 
+import "testing"
+
 type Stack[T any] struct {
 	values []T
 }
@@ -26,4 +28,18 @@ func (s *Stack[T]) Pop() (T, bool) {
 	el := s.values[index]
 	s.values = s.values[:index]
 	return el, true
+}
+
+func AssertEqual[T comparable](t *testing.T, got, want T) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %v, want %v", got, want)
+	}
+}
+
+func AssertNotEqual[T comparable](t *testing.T, got, want T) {
+	t.Helper()
+	if got == want {
+		t.Errorf("didn't want %v", got)
+	}
 }

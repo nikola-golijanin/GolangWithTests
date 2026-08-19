@@ -7,29 +7,16 @@ import (
 
 func TestAssertFunctions(t *testing.T) {
 	t.Run("asserting on integers", func(t *testing.T) {
-		AssertEqual(t, 1, 1)
-		AssertNotEqual(t, 1, 2)
+		generics.AssertEqual(t, 1, 1)
+		generics.AssertNotEqual(t, 1, 2)
 	})
 
 	t.Run("asserting on strings", func(t *testing.T) {
-		AssertEqual(t, "hello", "hello")
-		AssertNotEqual(t, "hello", "Grace")
+		generics.AssertEqual(t, "hello", "hello")
+		generics.AssertNotEqual(t, "hello", "Grace")
 	})
 
 	// AssertEqual(t, 1, "1") // uncomment to see the error
-}
-func AssertEqual[T comparable](t *testing.T, got, want T) {
-	t.Helper()
-	if got != want {
-		t.Errorf("got %v, want %v", got, want)
-	}
-}
-
-func AssertNotEqual[T comparable](t *testing.T, got, want T) {
-	t.Helper()
-	if got == want {
-		t.Errorf("didn't want %v", got)
-	}
 }
 
 func TestStack(t *testing.T) {
@@ -46,9 +33,9 @@ func TestStack(t *testing.T) {
 		// add another thing, pop it back again
 		myStackOfInts.Push(456)
 		value, _ := myStackOfInts.Pop()
-		AssertEqual(t, value, 456)
+		generics.AssertEqual(t, value, 456)
 		value, _ = myStackOfInts.Pop()
-		AssertEqual(t, value, 123)
+		generics.AssertEqual(t, value, 123)
 		AssertTrue(t, myStackOfInts.IsEmpty())
 
 		// can get the numbers we put in as numbers, not untyped interface{}
@@ -56,7 +43,7 @@ func TestStack(t *testing.T) {
 		myStackOfInts.Push(2)
 		firstNum, _ := myStackOfInts.Pop()
 		secondNum, _ := myStackOfInts.Pop()
-		AssertEqual(t, firstNum+secondNum, 3)
+		generics.AssertEqual(t, firstNum+secondNum, 3)
 	})
 
 	t.Run("string stack", func(t *testing.T) {
@@ -72,9 +59,9 @@ func TestStack(t *testing.T) {
 		// add another thing, pop it back again
 		myStackOfStrings.Push("456")
 		value, _ := myStackOfStrings.Pop()
-		AssertEqual(t, value, "456")
+		generics.AssertEqual(t, value, "456")
 		value, _ = myStackOfStrings.Pop()
-		AssertEqual(t, value, "123")
+		generics.AssertEqual(t, value, "123")
 		AssertTrue(t, myStackOfStrings.IsEmpty())
 	})
 }

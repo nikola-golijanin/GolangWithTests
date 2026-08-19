@@ -1,11 +1,9 @@
 package arraysandslices
 
+// Sum calculates the total from a slice of numbers.
 func Sum(numbers []int) int {
-	sum := 0
-	for _, number := range numbers {
-		sum += number
-	}
-	return sum
+	add := func(a, b int) int { return a + b }
+	return Reduce(numbers, add, 0)
 }
 
 func SumAll(numbersToSum ...[]int) []int {
@@ -17,16 +15,34 @@ func SumAll(numbersToSum ...[]int) []int {
 	return sums
 }
 
-func SumAllTails(numbersToSum ...[]int) []int {
-	var sums []int
-	for _, numbers := range numbersToSum {
-		if len(numbers) == 0 {
-			sums = append(sums, 0)
-		} else {
-			tail := numbers[1:]
-			sums = append(sums, Sum(tail))
+// SumAllTails calculates the sums of all but the first number given a collection of slices.
+func SumAllTails(numbers ...[]int) []int {
+	sumTail := func(acc, x []int) []int {
+		if len(x) == 0 {
+			return append(acc, 0)
 		}
+
+		tail := x[1:]
+		return append(acc, Sum(tail))
 	}
 
-	return sums
+	return Reduce(numbers, sumTail, []int{})
+}
+
+func Reduce[A, B any](collection []A, f func(B, A) B, initialValue B) B {
+	var result = initialValue
+	for _, x := range collection {
+		result = f(result, x)
+	}
+	return result
+}
+
+func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
+	for _, x := range collection {
+		if predicate(x) {
+			return x, true
+		}
+	}
+	var zero T
+	return zero, false
 }
